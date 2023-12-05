@@ -58,7 +58,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();    
 }
-// Console.WriteLine(app.Configuration.GetConnectionString("rhavy"));
+// //Console.WriteLine(app.Configuration.GetConnectionString("rhavy"));
 // app.Configuration.GetConnectionString("rhavy");
 
 app.UseHttpsRedirection();

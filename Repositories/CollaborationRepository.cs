@@ -5,6 +5,7 @@ using Models;
 using Repositories.Interfaces;
 using Util = Utils.Utils;
 using EfExtensions = Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions;
+using SQLitePCL;
 
 namespace Repositories;
 
@@ -31,7 +32,9 @@ public class CollaborationRepository : ICollaborationRepository
 
     public IQueryable<CollaborationModel> getAll()
     {
-        var all = EfExtensions.Include(_context.Collaborations, e=> e.CollaborationPermission);
+        var all = EfExtensions.Include(
+                  EfExtensions.Include(
+                  EfExtensions.Include(_context.Collaborations, e=> e.CollaborationPermission), e => e.Post), e=> e.User);
 
         return all;
     }
@@ -48,7 +51,7 @@ public class CollaborationRepository : ICollaborationRepository
 
     public async Task<CollaborationModel> update(CollaborationModel collaboration)
     {
-        var c = _context.Collaborations.Find(collaboration.user_email, collaboration.guid_post);
+        var c = getAll().Where(e => e.user_email == collaboration.user_email && e.guid_post == collaboration.guid_post).FirstOrDefault();
 
         if(collaboration.guid_Collaboration_permission != Guid.Empty)
             c.guid_Collaboration_permission = collaboration.guid_Collaboration_permission;

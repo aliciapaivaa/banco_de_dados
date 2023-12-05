@@ -19,7 +19,7 @@ public interface IUserService
     }
     public static User ModelToView(UserModel user)
     {
-        Console.WriteLine($"\n\n\n{user.name}\n\n\n");
+        //Console.WriteLine($"\n\n\n{user.name}\n\n\n");
 
         return new User{
             email = user.email,

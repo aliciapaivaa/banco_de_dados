@@ -73,7 +73,7 @@ public class PostRepository : IPostRepository
 
     public async Task<PostModel> update(PostModel post)
     {
-        var p = _context.Posts.Find(post.guid);
+        var p = await getByGuid(post.guid);
 
         if(post.subtitle != null)
             p.subtitle = post.subtitle;

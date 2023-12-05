@@ -49,7 +49,7 @@ public class UserRepository : IUserRepository
 
     public async Task<UserModel> update(UserModel user)
     {
-        var u = _context.Users.Find(user.email);
+        var u = getByEmail(user.email);
 
         if(user.guid_permission != Guid.Empty)
             u.guid_permission = user.guid_permission;
