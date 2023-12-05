@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace bancodedados.Migrations
 {
     /// <inheritdoc />
-    public partial class AllModels : Migration
+    public partial class SqliteMigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,16 +15,16 @@ namespace bancodedados.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    guid = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "character varying(80)", maxLength: 80, nullable: false),
-                    Parentguid = table.Column<Guid>(type: "uuid", nullable: true)
+                    guid = table.Column<Guid>(type: "TEXT", nullable: false),
+                    name = table.Column<string>(type: "TEXT", maxLength: 80, nullable: true),
+                    guidparent = table.Column<Guid>(name: "guid_parent", type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.guid);
                     table.ForeignKey(
-                        name: "FK_Categories_Categories_Parentguid",
-                        column: x => x.Parentguid,
+                        name: "FK_Categories_Categories_guid_parent",
+                        column: x => x.guidparent,
                         principalTable: "Categories",
                         principalColumn: "guid");
                 });
@@ -33,8 +33,8 @@ namespace bancodedados.Migrations
                 name: "CollaborationPermissions",
                 columns: table => new
                 {
-                    guid = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false)
+                    guid = table.Column<Guid>(type: "TEXT", nullable: false),
+                    name = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -45,8 +45,8 @@ namespace bancodedados.Migrations
                 name: "UserPermissions",
                 columns: table => new
                 {
-                    guid = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false)
+                    guid = table.Column<Guid>(type: "TEXT", nullable: false),
+                    name = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -57,10 +57,10 @@ namespace bancodedados.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    email = table.Column<string>(type: "text", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false),
-                    passhash = table.Column<int>(name: "pass_hash", type: "integer", nullable: false),
-                    guidpermission = table.Column<Guid>(name: "guid_permission", type: "uuid", nullable: false)
+                    email = table.Column<string>(type: "TEXT", nullable: false),
+                    name = table.Column<string>(type: "TEXT", nullable: true),
+                    passhash = table.Column<int>(name: "pass_hash", type: "INTEGER", nullable: false),
+                    guidpermission = table.Column<Guid>(name: "guid_permission", type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -77,13 +77,13 @@ namespace bancodedados.Migrations
                 name: "Posts",
                 columns: table => new
                 {
-                    guid = table.Column<Guid>(type: "uuid", nullable: false),
-                    title = table.Column<string>(type: "text", nullable: false),
-                    subtitle = table.Column<string>(type: "text", nullable: false),
-                    content = table.Column<string>(type: "text", nullable: false),
-                    date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    approved = table.Column<bool>(type: "boolean", nullable: false),
-                    useremail = table.Column<string>(name: "user_email", type: "text", nullable: false)
+                    guid = table.Column<Guid>(type: "TEXT", nullable: false),
+                    title = table.Column<string>(type: "TEXT", nullable: true),
+                    subtitle = table.Column<string>(type: "TEXT", nullable: true),
+                    content = table.Column<string>(type: "TEXT", nullable: true),
+                    date = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    approved = table.Column<bool>(type: "INTEGER", nullable: false),
+                    useremail = table.Column<string>(name: "user_email", type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -92,16 +92,15 @@ namespace bancodedados.Migrations
                         name: "FK_Posts_Users_user_email",
                         column: x => x.useremail,
                         principalTable: "Users",
-                        principalColumn: "email",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "email");
                 });
 
             migrationBuilder.CreateTable(
                 name: "CategoryModelPostModel",
                 columns: table => new
                 {
-                    Categoriesguid = table.Column<Guid>(type: "uuid", nullable: false),
-                    Postsguid = table.Column<Guid>(type: "uuid", nullable: false)
+                    Categoriesguid = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Postsguid = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -124,15 +123,15 @@ namespace bancodedados.Migrations
                 name: "Collaborations",
                 columns: table => new
                 {
-                    useremail = table.Column<string>(name: "user_email", type: "text", nullable: false),
-                    guidpost = table.Column<Guid>(name: "guid_post", type: "uuid", nullable: false),
-                    guidCollaborationpermission = table.Column<Guid>(name: "guid_Collaboration_permission", type: "uuid", nullable: false)
+                    useremail = table.Column<string>(name: "user_email", type: "TEXT", nullable: false),
+                    guidpost = table.Column<Guid>(name: "guid_post", type: "TEXT", nullable: false),
+                    guidCollaborationpermission = table.Column<Guid>(name: "guid_Collaboration_permission", type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Collaborations", x => new { x.useremail, x.guidpost });
                     table.ForeignKey(
-                        name: "FK_Collaborations_CollaborationPermissions_guid_Collaboration_~",
+                        name: "FK_Collaborations_CollaborationPermissions_guid_Collaboration_permission",
                         column: x => x.guidCollaborationpermission,
                         principalTable: "CollaborationPermissions",
                         principalColumn: "guid",
@@ -155,11 +154,11 @@ namespace bancodedados.Migrations
                 name: "Comments",
                 columns: table => new
                 {
-                    guid = table.Column<Guid>(type: "uuid", nullable: false),
-                    content = table.Column<string>(type: "text", nullable: false),
-                    useremail = table.Column<string>(name: "user_email", type: "text", nullable: false),
-                    guidpost = table.Column<Guid>(name: "guid_post", type: "uuid", nullable: false),
-                    publishdate = table.Column<DateTime>(name: "publish_date", type: "timestamp with time zone", nullable: false)
+                    guid = table.Column<Guid>(type: "TEXT", nullable: false),
+                    content = table.Column<string>(type: "TEXT", nullable: true),
+                    useremail = table.Column<string>(name: "user_email", type: "TEXT", nullable: true),
+                    guidpost = table.Column<Guid>(name: "guid_post", type: "TEXT", nullable: false),
+                    publishdate = table.Column<DateTime>(name: "publish_date", type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -174,16 +173,15 @@ namespace bancodedados.Migrations
                         name: "FK_Comments_Users_user_email",
                         column: x => x.useremail,
                         principalTable: "Users",
-                        principalColumn: "email",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "email");
                 });
 
             migrationBuilder.CreateTable(
                 name: "Likes",
                 columns: table => new
                 {
-                    useremail = table.Column<string>(name: "user_email", type: "text", nullable: false),
-                    guidpost = table.Column<Guid>(name: "guid_post", type: "uuid", nullable: false)
+                    useremail = table.Column<string>(name: "user_email", type: "TEXT", nullable: false),
+                    guidpost = table.Column<Guid>(name: "guid_post", type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -203,9 +201,9 @@ namespace bancodedados.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Categories_Parentguid",
+                name: "IX_Categories_guid_parent",
                 table: "Categories",
-                column: "Parentguid");
+                column: "guid_parent");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CategoryModelPostModel_Postsguid",

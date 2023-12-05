@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WebApi.Helpers;
 
 #nullable disable
@@ -12,26 +11,22 @@ using WebApi.Helpers;
 namespace bancodedados.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20231204112657_CategoryParent")]
-    partial class CategoryParent
+    [Migration("20231205202204_SqliteMigrations")]
+    partial class SqliteMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.13")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
-
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+            modelBuilder.HasAnnotation("ProductVersion", "7.0.13");
 
             modelBuilder.Entity("CategoryModelPostModel", b =>
                 {
                     b.Property<Guid>("Categoriesguid")
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.Property<Guid>("Postsguid")
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Categoriesguid", "Postsguid");
 
@@ -44,14 +39,14 @@ namespace bancodedados.Migrations
                 {
                     b.Property<Guid>("guid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.Property<Guid?>("guid_parent")
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("name")
                         .HasMaxLength(80)
-                        .HasColumnType("character varying(80)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("guid");
 
@@ -63,13 +58,13 @@ namespace bancodedados.Migrations
             modelBuilder.Entity("Models.CollaborationModel", b =>
                 {
                     b.Property<string>("user_email")
-                        .HasColumnType("text");
+                        .HasColumnType("TEXT");
 
                     b.Property<Guid>("guid_post")
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.Property<Guid>("guid_Collaboration_permission")
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("user_email", "guid_post");
 
@@ -84,10 +79,10 @@ namespace bancodedados.Migrations
                 {
                     b.Property<Guid>("guid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("name")
-                        .HasColumnType("text");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("guid");
 
@@ -98,19 +93,19 @@ namespace bancodedados.Migrations
                 {
                     b.Property<Guid>("guid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("content")
-                        .HasColumnType("text");
+                        .HasColumnType("TEXT");
 
                     b.Property<Guid>("guid_post")
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("publish_date")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("user_email")
-                        .HasColumnType("text");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("guid");
 
@@ -124,10 +119,10 @@ namespace bancodedados.Migrations
             modelBuilder.Entity("Models.LikeModel", b =>
                 {
                     b.Property<string>("user_email")
-                        .HasColumnType("text");
+                        .HasColumnType("TEXT");
 
                     b.Property<Guid>("guid_post")
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("user_email", "guid_post");
 
@@ -140,25 +135,25 @@ namespace bancodedados.Migrations
                 {
                     b.Property<Guid>("guid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("approved")
-                        .HasColumnType("boolean");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("content")
-                        .HasColumnType("text");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("date")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("subtitle")
-                        .HasColumnType("text");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("title")
-                        .HasColumnType("text");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("user_email")
-                        .HasColumnType("text");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("guid");
 
@@ -170,16 +165,16 @@ namespace bancodedados.Migrations
             modelBuilder.Entity("Models.UserModel", b =>
                 {
                     b.Property<string>("email")
-                        .HasColumnType("text");
+                        .HasColumnType("TEXT");
 
                     b.Property<Guid>("guid_permission")
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("name")
-                        .HasColumnType("text");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("pass_hash")
-                        .HasColumnType("integer");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("email");
 
@@ -192,12 +187,12 @@ namespace bancodedados.Migrations
                 {
                     b.Property<Guid>("guid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("name")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("guid");
 

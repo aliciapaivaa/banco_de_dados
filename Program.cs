@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddDbContext<ApplicationContext>(
-    options => options.UseNpgsql( builder.Configuration.GetConnectionString("default"))
+    options => options.UseSqlite("Data Source=database.db")
 );
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
