@@ -62,6 +62,6 @@ public class UserRepository : IUserRepository
         
         await _context.SaveChangesAsync();    
 
-        return u;
+        return getByEmail(user.email);
     }
 }

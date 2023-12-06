@@ -90,6 +90,6 @@ public class PostRepository : IPostRepository
         
         await _context.SaveChangesAsync();
 
-        return p;
+        return await getByGuid(post.guid);
     }
 }

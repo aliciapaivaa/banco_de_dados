@@ -60,6 +60,6 @@ public class CollaborationRepository : ICollaborationRepository
         
         await _context.SaveChangesAsync();    
 
-        return c;
+        return getAll().Where(e => e.user_email == collaboration.user_email && e.guid_post == collaboration.guid_post).FirstOrDefault();
     }
 }
